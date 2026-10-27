@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Placa WiFi</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9e6e1; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: #111827; }
+  .controles { max-width: 640px; margin: 0 auto; padding: 20px 16px; }
+  .controles label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .controles input { width: 100%; padding: 10px 12px; font: inherit; border: 1px solid #c9c4bb; border-radius: 8px; }
+  .controles p { font-size: 13px; color: #555; }
+  .controles button { padding: 10px 18px; font: inherit; font-weight: 600; background: #111827; color: #fff; border: 0; border-radius: 8px; cursor: pointer; }
+
+  /* Placa tamaño A5 vertical (148 x 210 mm) */
+  .placa {
+    width: 148mm; height: 210mm; margin: 0 auto 40px;
+    background: #fff; border-radius: 6mm;
+    display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+    padding: 16mm 12mm 12mm; text-align: center;
+    box-shadow: 0 6px 24px rgba(0,0,0,.12);
+  }
+  .icono-wifi { width: 26mm; height: 26mm; }
+  .placa h1 { font-size: 15mm; line-height: 1; margin: 4mm 0 2mm; letter-spacing: -0.02em; }
+  .placa .bajada { font-size: 5.5mm; margin: 0; color: #444; }
+  #qr-placa { padding: 5mm; border: 1.2mm solid #ef9420; border-radius: 5mm; }
+  #qr-placa img, #qr-placa canvas { width: 62mm !important; height: 62mm !important; display: block; }
+  .pasos { font-size: 4.6mm; color: #333; margin: 0; }
+  .negocio { font-size: 6.5mm; font-weight: 700; margin: 0; }
+  .negocio img { display: block; width: 100mm; height: auto; border-radius: 3mm; }
+
+  @media print {
+    @page { size: A5 portrait; margin: 0; }
+    body { background: #fff; }
+    .controles { display: none; }
+    .placa { margin: 0; box-shadow: none; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="controles">
+  <label for="url">Dirección de la página publicada</label>
+  <input id="url" type="url" placeholder="https://tuusuario.github.io/wifi/">
+  <p>Pegá la dirección de GitHub Pages, revisá que el QR la abra bien con el celular y después imprimí (Ctrl+P, tamaño A5, sin márgenes).</p>
+  <button onclick="window.print()">Imprimir</button>
+</div>
+
+<div class="placa">
+  <div>
+    <svg class="icono-wifi" viewBox="0 0 24 24" fill="none" stroke="#ef9420" stroke-width="2.2" stroke-linecap="round">
+      <path d="M2 8.5a15 15 0 0120 0M5 12a10.5 10.5 0 0114 0M8.5 15.5a5.5 5.5 0 017 0"/><circle cx="12" cy="19" r="1.3" fill="#ef9420"/>
+    </svg>
+    <h1>WiFi gratis</h1>
+    <p class="bajada">Escaneá con la cámara del celular</p>
+  </div>
+  <div id="qr-placa"></div>
+  <p class="pasos">Abrí la cámara · apuntá al código · tocá el enlace</p>
+  <p class="negocio" id="negocio"></p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="config.js"></script>
+<script>
+  const negocio = document.getElementById('negocio');
+  if (window.CONFIG.logo) {
+    const img = document.createElement('img');
+    img.src = window.CONFIG.logo;
+    img.alt = window.CONFIG.negocio;
+    negocio.appendChild(img);
+  } else {
+    negocio.textContent = window.CONFIG.negocio;
+  }
+  const input = document.getElementById('url');
+  const contenedor = document.getElementById('qr-placa');
+  const guardada = (() => { try { return localStorage.getItem('placa-url'); } catch (_) { return null; } })();
+  input.value = guardada || location.href.replace(/placa\.html.*$/, '');
+
+  function dibujar() {
+    contenedor.innerHTML = '';
+    new QRCode(contenedor, { text: input.value.trim() || ' ', width: 512, height: 512, correctLevel: QRCode.CorrectLevel.H });
+    try { localStorage.setItem('placa-url', input.value.trim()); } catch (_) {}
+  }
+  input.addEventListener('input', dibujar);
+  dibujar();
+</script>
+</body>
+</html>
