@@ -6,8 +6,12 @@ window.CONFIG = {
   direccion: 'Diagonal Eva Perón 251',   // opcional, sale al pie
   logo: 'logo.jpg',                      // opcional: imagen en la misma carpeta
 
-  // Dirección publicada: es la que va en el QR de la placa
+  // Dirección publicada: es la que va en el QR de las placas
   urlPagina: 'https://facundomtst-coder.github.io/wifi/',
+
+  // Número del local tal como se muestra en contacto.html
+  // (la tarjeta para guardar está en contacto.vcf: si cambia el número, cambiarlo ahí también)
+  telefono: '362 416-8183',
 
   wifi: {
     red: 'Cerveza Schneider 2.4GHz',

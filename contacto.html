@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nuestro número</title>
+<meta name="theme-color" content="#111827">
+<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+<main>
+  <header>
+    <div id="logo"></div>
+    <h1 id="nombre-negocio"></h1>
+    <p class="sub">Guardá nuestro contacto</p>
+  </header>
+
+  <!-- Paso 1: el cliente deja sus datos -->
+  <section class="card" id="paso-form">
+    <h2>¿Querés nuestro número?</h2>
+    <p class="hint">Dejanos tu nombre y WhatsApp y te pasamos el nuestro para que lo agendes.</p>
+    <form id="form" novalidate>
+      <label for="f-nombre">Nombre</label>
+      <input id="f-nombre" type="text" autocomplete="given-name" required>
+      <label for="f-tel">WhatsApp</label>
+      <input id="f-tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="Ej: 362 4123456" required>
+      <label class="check">
+        <input id="f-acepta" type="checkbox" checked>
+        <span id="texto-acepta"></span>
+      </label>
+      <button id="btn-enviar" type="submit">Ver nuestro número</button>
+      <p class="error" id="error" role="alert"></p>
+    </form>
+  </section>
+
+  <!-- Paso 2: el número y cómo guardarlo -->
+  <section class="card" id="paso-2" hidden>
+    <h2>¡Gracias! Este es nuestro número</h2>
+    <a class="numero" id="numero"></a>
+    <div id="acciones"></div>
+  </section>
+
+  <!-- Enlaces del negocio -->
+  <section class="links" id="links" hidden></section>
+
+  <footer id="pie"></footer>
+</main>
+
+<script src="config.js"></script>
+<script src="comun.js"></script>
+<script>
+  iniciarPagina({
+    titulo: 'Contacto',
+    origen: 'numero',
+    incluirWhatsapp: false,   // ya está como botón principal arriba
+    mostrar() {
+      const tel = '+' + C.enlaces.whatsapp.replace(/\D/g, '');
+      const numero = document.getElementById('numero');
+      numero.textContent = C.telefono;
+      numero.href = 'tel:' + tel;
+
+      const acciones = document.getElementById('acciones');
+      acciones.innerHTML = '';
+      acciones.appendChild(crearBoton('contacto', 'Guardar en mis contactos', 'contacto.vcf', ''));
+      acciones.appendChild(crearBoton('whatsapp', 'Escribinos por WhatsApp', urlWhatsapp(), 'secundario'));
+      acciones.appendChild(crearBoton('telefono', 'Llamar', 'tel:' + tel, 'secundario'));
+    }
+  });
+</script>
+</body>
+</html>

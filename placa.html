@@ -22,6 +22,7 @@
     box-shadow: 0 6px 24px rgba(0,0,0,.12);
   }
   .icono-wifi { width: 26mm; height: 26mm; }
+  [hidden] { display: none !important; }
   .placa h1 { font-size: 15mm; line-height: 1; margin: 4mm 0 2mm; letter-spacing: -0.02em; }
   .placa .bajada { font-size: 5.5mm; margin: 0; color: #444; }
   #qr-placa { padding: 5mm; border: 1.2mm solid #ef9420; border-radius: 5mm; }
@@ -48,11 +49,14 @@
 
 <div class="placa">
   <div>
-    <svg class="icono-wifi" viewBox="0 0 24 24" fill="none" stroke="#ef9420" stroke-width="2.2" stroke-linecap="round">
+    <svg class="icono-wifi" id="icono-wifi" viewBox="0 0 24 24" fill="none" stroke="#ef9420" stroke-width="2.2" stroke-linecap="round">
       <path d="M2 8.5a15 15 0 0120 0M5 12a10.5 10.5 0 0114 0M8.5 15.5a5.5 5.5 0 017 0"/><circle cx="12" cy="19" r="1.3" fill="#ef9420"/>
     </svg>
-    <h1>WiFi gratis</h1>
-    <p class="bajada">Escaneá con la cámara del celular</p>
+    <svg class="icono-wifi" id="icono-numero" hidden viewBox="0 0 24 24" fill="none" stroke="#ef9420" stroke-width="2" stroke-linejoin="round">
+      <path d="M5 3h4l2 5-2.5 1.5a11 11 0 005 5L15 12l5 2v4a2 2 0 01-2 2A16 16 0 013 5a2 2 0 012-2z"/>
+    </svg>
+    <h1 id="titulo">WiFi gratis</h1>
+    <p class="bajada" id="bajada">Escaneá con la cámara del celular</p>
   </div>
   <div id="qr-placa"></div>
   <p class="pasos">Abrí la cámara · apuntá al código · tocá el enlace</p>
@@ -76,6 +80,16 @@
   // Siempre la dirección publicada: si la placa se abre desde la PC (file:// o localhost)
   // esa dirección no sirve en el celular y la cámara dice "formato no válido"
   input.value = window.CONFIG.urlPagina || location.href.replace(/placa\.html.*$/, '');
+
+  // placa.html?tipo=numero es la placa de "¿Querés nuestro número?"
+  if (new URLSearchParams(location.search).get('tipo') === 'numero') {
+    document.title = 'Placa número';
+    document.getElementById('icono-wifi').hidden = true;
+    document.getElementById('icono-numero').hidden = false;
+    document.getElementById('titulo').textContent = '¿Nuestro número?';
+    document.getElementById('bajada').textContent = 'Escaneá y agendalo en tu celular';
+    input.value += 'contacto.html';
+  }
 
   function dibujar() {
     contenedor.innerHTML = '';
