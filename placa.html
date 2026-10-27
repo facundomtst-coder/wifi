@@ -84,9 +84,12 @@
   // placa.html?tipo=numero es la placa de "¿Querés nuestro número?"
   if (new URLSearchParams(location.search).get('tipo') === 'numero') {
     document.title = 'Placa número';
-    document.getElementById('icono-wifi').hidden = true;
-    document.getElementById('icono-numero').hidden = false;
-    document.getElementById('titulo').textContent = '¿Nuestro número?';
+    // En los <svg> la propiedad .hidden no existe: hay que tocar el atributo
+    document.getElementById('icono-wifi').setAttribute('hidden', '');
+    document.getElementById('icono-numero').removeAttribute('hidden');
+    const titulo = document.getElementById('titulo');
+    titulo.textContent = '¿Nuestro número?';
+    titulo.style.fontSize = '12mm';   // que entre en un solo renglón
     document.getElementById('bajada').textContent = 'Escaneá y agendalo en tu celular';
     input.value += 'contacto.html';
   }
