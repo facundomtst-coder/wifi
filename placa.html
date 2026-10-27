@@ -73,13 +73,13 @@
   }
   const input = document.getElementById('url');
   const contenedor = document.getElementById('qr-placa');
-  const guardada = (() => { try { return localStorage.getItem('placa-url'); } catch (_) { return null; } })();
-  input.value = guardada || location.href.replace(/placa\.html.*$/, '');
+  // Siempre la dirección publicada: si la placa se abre desde la PC (file:// o localhost)
+  // esa dirección no sirve en el celular y la cámara dice "formato no válido"
+  input.value = window.CONFIG.urlPagina || location.href.replace(/placa\.html.*$/, '');
 
   function dibujar() {
     contenedor.innerHTML = '';
     new QRCode(contenedor, { text: input.value.trim() || ' ', width: 512, height: 512, correctLevel: QRCode.CorrectLevel.H });
-    try { localStorage.setItem('placa-url', input.value.trim()); } catch (_) {}
   }
   input.addEventListener('input', dibujar);
   dibujar();
