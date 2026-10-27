@@ -21,5 +21,5 @@ window.CONFIG = {
 
   // URL de la aplicación web de Google Apps Script (ver LEEME.md).
   // Mientras esté vacía, la página funciona pero no guarda los teléfonos.
-  urlPlanilla: ''
+  urlPlanilla: 'https://script.google.com/macros/s/AKfycbyt6SDNn-YX2w3RNCUmbGuhQnF05tkEoQo1PSLzJkJcr_DmJ48VjMclN2gCuvmDsyJiNQ/exec'
 };
