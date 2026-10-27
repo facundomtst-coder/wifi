@@ -38,6 +38,8 @@
     <h2>¡Gracias! Este es nuestro número</h2>
     <a class="numero" id="numero"></a>
     <div id="acciones"></div>
+    <p class="hint" style="margin:16px 0 0">¿Venís acompañado? Que escaneen este código con la cámara y nos escriben por WhatsApp:</p>
+    <div id="qr"></div>
   </section>
 
   <!-- Enlaces del negocio -->
@@ -46,6 +48,7 @@
   <footer id="pie"></footer>
 </main>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="config.js"></script>
 <script src="comun.js"></script>
 <script>
@@ -64,6 +67,10 @@
       acciones.appendChild(crearBoton('contacto', 'Guardar en mis contactos', 'contacto.vcf', ''));
       acciones.appendChild(crearBoton('whatsapp', 'Escribinos por WhatsApp', urlWhatsapp(), 'secundario'));
       acciones.appendChild(crearBoton('telefono', 'Llamar', 'tel:' + tel, 'secundario'));
+
+      const qr = document.getElementById('qr');
+      qr.innerHTML = '';
+      new QRCode(qr, { text: urlWhatsapp(), width: 180, height: 180, correctLevel: QRCode.CorrectLevel.M });
     }
   });
 </script>
